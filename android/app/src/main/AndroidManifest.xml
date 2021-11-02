@@ -84,5 +84,7 @@
 
       <meta-data android:name="com.urbanairship.reactnative.AIRSHIP_EXTENDER"
           android:value="com.expensify.chat.CustomAirshipExtender" />
+
+      <meta-data android:name="com.bugsnag.android.API_KEY" android:value="759adcf6f1ad565ab1547f4fbc414ca7" />
     </application>
 </manifest>

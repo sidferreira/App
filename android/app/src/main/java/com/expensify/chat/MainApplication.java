@@ -1,5 +1,6 @@
 package com.expensify.chat;
 
+import com.bugsnag.android.Bugsnag;
 import android.content.Context;
 import android.database.CursorWindow;
 import androidx.multidex.MultiDexApplication;
@@ -58,6 +59,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
   @Override
   public void onCreate() {
       super.onCreate();
+      Bugsnag.start(this);
       SoLoader.init(this, /* native exopackage */ false);
       initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
       if (BuildConfig.DEBUG) {

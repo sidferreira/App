@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Bugsnag from '@bugsnag/react-native';
+
+Bugsnag.start();
 
 const propTypes = {
     /* A message posted to `logError` (along with error data) when this component intercepts an error */
@@ -33,6 +36,7 @@ class BaseErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error, errorInfo) {
+        Bugsnag.notify(error);
         this.props.logError(this.props.errorMessage, error, errorInfo);
     }
 

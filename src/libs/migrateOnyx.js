@@ -1,4 +1,5 @@
 import _ from 'underscore';
+import Bugsnag from '@bugsnag/react-native';
 import Log from './Log';
 import AddEncryptedAuthToken from './migrations/AddEncryptedAuthToken';
 import RenameActiveClientsKey from './migrations/RenameActiveClientsKey';
@@ -9,6 +10,7 @@ export default function () {
     Log.info('[Migrate Onyx] start');
 
     return new Promise((resolve) => {
+        Bugsnag.leaveBreadcrumb('migrateOnyx');
         // Add all migrations to an array so they are executed in order
         const migrationPromises = [
             RenameActiveClientsKey,

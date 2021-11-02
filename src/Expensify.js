@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
 import {View, AppState} from 'react-native';
 import Onyx, {withOnyx} from 'react-native-onyx';
+import Bugsnag from '@bugsnag/react-native';
 
 import BootSplash from './libs/BootSplash';
 import * as ActiveClientManager from './libs/ActiveClientManager';
@@ -71,6 +72,9 @@ class Expensify extends PureComponent {
         this.state = {
             isOnyxMigrated: false,
         };
+        setTimeout(() => {
+            Bugsnag.notify(new Error('2s timeout'));
+        }, 2000);
     }
 
     componentDidMount() {
@@ -81,13 +85,17 @@ class Expensify extends PureComponent {
         // Run any Onyx schema migrations and then continue loading the main app
         migrateOnyx()
             .then(() => {
+                Bugsnag.leaveBreadcrumb('migrateOnyx');
                 // When we don't have an authToken we'll want to show the sign in screen immediately so we'll hide our
                 // boot screen right away
                 if (!this.getAuthToken()) {
+                    Bugsnag.leaveBreadcrumb('migrateOnyx => hideSplash');
                     this.hideSplash();
 
                     // In case of a crash that led to disconnection, we want to remove all the push notifications.
                     PushNotification.clearNotifications();
+                } else {
+                    Bugsnag.leaveBreadcrumb('migrateOnyx => else');
                 }
 
                 this.setState({isOnyxMigrated: true});
@@ -120,6 +128,7 @@ class Expensify extends PureComponent {
     }
 
     getAuthToken() {
+        console.log(`session`, JSON.stringify(this.props.session, null, 2));
         return lodashGet(this.props, 'session.authToken', null);
     }
 

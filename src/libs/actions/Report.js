@@ -1,4 +1,5 @@
 import {Linking} from 'react-native';
+import Bugsnag from '@bugsnag/react-native';
 import moment from 'moment';
 import _ from 'underscore';
 import lodashGet from 'lodash/get';
@@ -939,6 +940,7 @@ function fetchAllReports(
             return fetchOrCreateChatReport([currentUserEmail, CONST.EMAIL.CONCIERGE], false);
         })
         .then((returnedReports) => {
+            Bugsnag.leaveBreadcrumb('set ONYXKEYS.INITIAL_REPORT_DATA_LOADED');
             Onyx.set(ONYXKEYS.INITIAL_REPORT_DATA_LOADED, true);
 
             // If at this point the user still doesn't have a Concierge report, create it for them.
